@@ -2,7 +2,7 @@
 
 DATA & CODE FILE OVERVIEW
 
-This repository contains 2 code scripts for Denver Botanic Gardens' restoration project at CommonGround golf course. All data to run these scripts can be found in \Denver Botanic Gardens\Conservation - Restoration\CommonGround Golf Course. 2022 files are in \Denver Botanic Gardens\Conservation - Restoration\CommonGround Golf Course\Data_rick. 
+This repository contains 2 code scripts for Denver Botanic Gardens' restoration project at CommonGround golf course. All data to run these scripts can be found in \Denver Botanic Gardens\Conservation - Restoration\CommonGround Golf Course\Data_rick. 
 
 CODE SCRIPTS
 
