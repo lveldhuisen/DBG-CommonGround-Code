@@ -9,3 +9,26 @@ library(viridis) #colorblind friendly color palette
 #2023 data for experimental plots-----------------------------------------------
 #bring in and clean up data-----------------------------------------------------
 
+#set working directory
+setwd("C:/Users/leah.veldhuisen/Denver Botanic Gardens/
+      Conservation - Documents/Restoration/CommonGround Golf Course/Data_rick")
+
+data2023 <- read.csv("2023_plantsurveys_data.csv") #read in csv
+
+data2023_nounknowns <- data2023[-c(1:28, 576:579),] #remove unknown species
+
+#summaries of species by plot
+tx_species_counts2023 <- data2023_nounknowns %>% group_by(Plot_number, Treatment) %>% 
+  summarise_all(n_distinct)
+
+#combine plot number and treatment columns
+tx_species_counts2023$Plot = paste(tx_species_counts2023$Plot_number,
+                                   tx_species_counts2023$Treatment, sep=" ")
+
+#figures------------------------------------------------------------------------
+ggplot(tx_species_counts2023, aes(x=Plot, y=Species))+
+  geom_bar(stat = "identity", fill="steelblue")+
+  ylab("Number of species")+
+  theme_bw()
+
+
