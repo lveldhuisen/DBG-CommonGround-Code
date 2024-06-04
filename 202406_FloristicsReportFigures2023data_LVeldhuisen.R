@@ -26,9 +26,7 @@ tx_species_counts2023$Plot = paste(tx_species_counts2023$Plot_number,
                                    tx_species_counts2023$Treatment, sep=" ")
 
 #figures------------------------------------------------------------------------
-ggplot(tx_species_counts2023, aes(x=Plot, y=Species))+
-  geom_bar(stat = "identity", fill="steelblue")+
-  ylab("Number of species")+
+ggplot(tx_species_counts2023, aes(x=Treatment, y=Species))+
+  geom_boxplot()+
   theme_bw()
-
 
