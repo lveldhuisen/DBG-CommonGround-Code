@@ -26,7 +26,15 @@ tx_species_counts2023$Plot = paste(tx_species_counts2023$Plot_number,
                                    tx_species_counts2023$Treatment, sep=" ")
 
 #figures------------------------------------------------------------------------
-ggplot(tx_species_counts2023, aes(x=Treatment, y=Species))+
-  geom_boxplot()+
-  theme_bw()
 
+##boxplot for species richness by treatment############
+ggplot(tx_species_counts2023, aes(x=Treatment, y=Species))+
+  geom_boxplot(fill="steelblue")+
+  theme_bw()+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  ylab("Number of species")
+
+##bar plot for species richness by treatment###########
+ggplot(data2023_nounknowns, aes(x=Treatment, y=Species))+
+  geom_bar(stat = "identity")+
+  theme_bw()
