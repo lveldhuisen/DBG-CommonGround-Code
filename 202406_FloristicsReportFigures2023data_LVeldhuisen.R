@@ -15,7 +15,8 @@ setwd("C:/Users/leah.veldhuisen/Denver Botanic Gardens/
 
 data2023 <- read.csv("2023_plantsurveys_data.csv") #read in csv
 
-data2023_nounknowns <- data2023[-c(1:28, 576:579),] #remove unknown species
+data2023_nounknowns <- data2023[-c(580:583,565:579,562:564,561,
+                                   555:557,545:548,538,284),] #remove unknown species
 
 #summaries of species by plot
 tx_species_counts2023 <- data2023_nounknowns %>% group_by(Plot_number, Treatment) %>% 
@@ -35,6 +36,41 @@ ggplot(tx_species_counts2023, aes(x=Treatment, y=Species))+
   ylab("Number of species")
 
 ##bar plot for species richness by treatment###########
-ggplot(data2023_nounknowns, aes(x=Treatment, y=Species))+
-  geom_bar(stat = "identity")+
+ggplot(data2023_nounknowns, aes(x=Treatment))+
+  geom_bar(fill="steelblue")+
+  theme_bw()+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  ylab("Number of observations")
+
+#bar plot for c.values by tx
+ggplot(data2023_nounknowns, aes(x=Treatment, fill = C.value))+
+  geom_bar()+
+  scale_fill_viridis_d()+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  ylab("Number of observations")+
   theme_bw()
+
+#bar plot for origin by tx
+ggplot(data2023_nounknowns, aes(x=Treatment, fill = Origin))+
+  geom_bar()+
+  scale_fill_viridis_d(end = 0.8)+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  ylab("Number of observations")+
+  theme_bw()
+
+#bar plot for wetland status by tx
+ggplot(data2023_nounknowns, aes(x=Treatment, fill = Wetland_indicator_status))+
+  geom_bar()+
+  scale_fill_viridis_d(end = 0.8)+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  ylab("Number of observations")+
+  theme_bw()
+
+#bar plot for seeded species successby tx
+ggplot(data2023_nounknowns, aes(x=Treatment, fill = Seeded.))+
+  geom_bar()+
+  scale_fill_viridis_d(begin = 0.2, end = 0.8)+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  ylab("Number of observations")+
+  theme_bw()
+
