@@ -36,7 +36,8 @@ all2022_noplots = subset(allplots2022_byplot,
 all2022_noplots <- distinct(all2022_noplots) #combine entries of the same species
 
 #summaries of species by plot
-plot_species_counts_df <- allplots2022_byplot %>% group_by(plot) %>% summarise_all(n_distinct)
+plot_species_counts_df <- allplots2022_byplot %>% group_by(plot) %>% 
+  summarise_all(n_distinct)
 
 plot_species_counts_df <- plot_species_counts_df[-c(9,17,20,21,22),] #remove species not in plots
 
