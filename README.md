@@ -14,7 +14,11 @@ Code scripts
 SOFTWARE VERSIONS
 
 R: 2024.04.1
+
 dplyr: 1.1.4
+
 ggplot2: 3.5.1
+
 tidyverse: 2.0.0
+
 viridis: 0.6.5
