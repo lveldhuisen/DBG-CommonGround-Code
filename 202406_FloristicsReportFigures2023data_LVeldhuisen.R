@@ -7,7 +7,8 @@ library(tidyr) #more data manipulation
 library(viridis) #colorblind friendly color palette
 
 #2023 data for experimental plots-----------------------------------------------
-#bring in and clean up data-----------------------------------------------------
+
+#Bring in and clean up data-----------------------------------------------------
 
 #set working directory
 setwd("C:/Users/leah.veldhuisen/Denver Botanic Gardens/
@@ -40,10 +41,10 @@ GCA_df_2023_clean <- na.omit(GCA_df_2023) #get rid of NAs
 GCA_df_2023_clean$Number_focal_species <- as.numeric(as.character(
   GCA_df_2023_clean$Number_focal_species)) 
 
-#figures------------------------------------------------------------------------
+#Figures------------------------------------------------------------------------
 
-##species richness data#######
-##boxplot for species richness by treatment############
+##Species richness data#######
+###boxplot for species richness by treatment############
 ggplot(tx_species_counts2023, aes(x=Treatment, y=Species))+
   geom_boxplot()+
   theme_bw()+
@@ -51,14 +52,7 @@ ggplot(tx_species_counts2023, aes(x=Treatment, y=Species))+
   ylab("Number of species")+
   ggtitle("Species richness by treatment")
 
-##bar plot for species richness by treatment###########
-ggplot(data2023_nounknowns, aes(x=Treatment))+
-  geom_bar(fill="steelblue")+
-  theme_bw()+
-  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
-  ylab("Number of observations")
-
-#bar plot for c.values by tx
+###bar plot for c.values by tx####
 ggplot(data2023_nounknowns, aes(x=Treatment, fill = C.value))+
   geom_bar()+
   scale_fill_viridis_d()+
@@ -66,7 +60,7 @@ ggplot(data2023_nounknowns, aes(x=Treatment, fill = C.value))+
   ylab("Number of observations")+
   theme_bw()
 
-#bar plot for origin by tx
+###bar plot for origin by tx#####
 ggplot(data2023_nounknowns, aes(x=Treatment, fill = Origin))+
   geom_bar()+
   scale_fill_viridis_d(end = 0.8)+
@@ -74,7 +68,7 @@ ggplot(data2023_nounknowns, aes(x=Treatment, fill = Origin))+
   ylab("Number of observations")+
   theme_bw()
 
-#bar plot for wetland status by tx
+###bar plot for wetland status by tx#########
 ggplot(data2023_nounknowns, aes(x=Treatment, fill = Wetland_indicator_status))+
   geom_bar()+
   scale_fill_viridis_d(end = 0.8)+
@@ -82,7 +76,7 @@ ggplot(data2023_nounknowns, aes(x=Treatment, fill = Wetland_indicator_status))+
   ylab("Number of observations")+
   theme_bw()
 
-#bar plot for seeded species success by tx
+###bar plot for seeded species success by tx####
 ggplot(data2023_nounknowns, aes(x=Treatment, fill = Seeded.))+
   geom_bar()+
   scale_fill_viridis_d(begin = 0.2, end = 0.8)+
@@ -90,17 +84,29 @@ ggplot(data2023_nounknowns, aes(x=Treatment, fill = Seeded.))+
   ylab("Number of observations")+
   theme_bw()
 
-##ground cover and abundance data#######
+###boxplot for C values by treatment#######
+ggplot(data2023_nounknowns, aes(x=Treatment, y=C.value))+
+  geom_boxplot()+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  theme_bw()
 
-#boxplot for number of seeded species in each tx
+##Ground cover and abundance data#######
+
+###boxplot for number of seeded species in each tx######
 ggplot(GCA_df_2023_clean, aes(x=Treatment,y=Number_focal_species))+
   geom_boxplot()+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
   theme_bw()+
   ylab("Number of individuals of seeded species")+
   ggtitle("Number of seeded individuals by treatment")
+
+###
+ggplot(GCA_df_2023_clean, aes(x=Treatment, y= Number_focal_species))+
+  geom_bar(stat = "identity")+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  theme_bw()
   
-#boxplot for overall ground cover by treatment
+###boxplot for overall ground cover by treatment#####
 ggplot(GCA_df_2023_clean, aes(x=Treatment,y=Percent_GC_overall))+
   geom_boxplot()+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
@@ -108,7 +114,7 @@ ggplot(GCA_df_2023_clean, aes(x=Treatment,y=Percent_GC_overall))+
   ylab("% groundcover")+
   ggtitle("Percent ground cover by treatment")
 
-#boxplot for % bare ground by treatment
+###boxplot for % bare ground by treatment####
 ggplot(GCA_df_2023_clean, aes(x=Treatment,y=Percent_BG))+
   geom_boxplot()+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
@@ -116,7 +122,3 @@ ggplot(GCA_df_2023_clean, aes(x=Treatment,y=Percent_BG))+
   ylab("% bare ground")+
   ggtitle("Percent bare ground by treatment")
 
-#boxplot for C values by treatment
-ggplot(data2023_nounknowns, aes(x=Treatment, y=C.value))+
-  geom_boxplot()+
-  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))
