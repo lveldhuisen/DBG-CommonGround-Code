@@ -100,8 +100,8 @@ ggplot(GCA_df_2023_clean, aes(x=Treatment,y=Number_focal_species))+
   ylab("Number of individuals of seeded species")+
   ggtitle("Number of seeded individuals by treatment")
 
-###
-ggplot(GCA_df_2023_clean, aes(x=Treatment, y= Number_focal_species))+
+###bar plot trying to color code species obs####
+ggplot(data2023_nounknowns, aes(x=Treatment, y=Species, fill = C.value))+
   geom_bar(stat = "identity")+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
   theme_bw()
@@ -122,3 +122,7 @@ ggplot(GCA_df_2023_clean, aes(x=Treatment,y=Percent_BG))+
   ylab("% bare ground")+
   ggtitle("Percent bare ground by treatment")
 
+ggplot(GCA_df_2023_clean, aes(x=Number_focal_species))+
+  geom_histogram()+
+  facet_grid(.~Treatment)+
+  theme_bw()
