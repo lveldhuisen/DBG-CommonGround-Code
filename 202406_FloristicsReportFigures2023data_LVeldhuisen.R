@@ -13,6 +13,7 @@ library(viridis) #colorblind friendly color palette
 setwd("C:/Users/leah.veldhuisen/Denver Botanic Gardens/
       Conservation - Documents/Restoration/CommonGround Golf Course/Data_rick")
 
+#species richeness data
 data2023 <- read.csv("2023_plantsurveys_data.csv") #read in csv
 
 data2023_nounknowns <- data2023[-c(580:583,565:579,562:564,561,
@@ -26,8 +27,14 @@ tx_species_counts2023 <- data2023_nounknowns %>% group_by(Plot_number, Treatment
 tx_species_counts2023$Plot = paste(tx_species_counts2023$Plot_number,
                                    tx_species_counts2023$Treatment, sep=" ")
 
+#ground cover and abundance data 
+GCA_df_2023 <- read.csv("2023_PlantSurveys_GroundCoverData.csv") #read csv
+
+GCA_df_2023_clean <- na.omit(GCA_df_2023)
+
 #figures------------------------------------------------------------------------
 
+##species richness data#######
 ##boxplot for species richness by treatment############
 ggplot(tx_species_counts2023, aes(x=Treatment, y=Species))+
   geom_boxplot(fill="steelblue")+
@@ -66,7 +73,7 @@ ggplot(data2023_nounknowns, aes(x=Treatment, fill = Wetland_indicator_status))+
   ylab("Number of observations")+
   theme_bw()
 
-#bar plot for seeded species successby tx
+#bar plot for seeded species success by tx
 ggplot(data2023_nounknowns, aes(x=Treatment, fill = Seeded.))+
   geom_bar()+
   scale_fill_viridis_d(begin = 0.2, end = 0.8)+
@@ -74,3 +81,11 @@ ggplot(data2023_nounknowns, aes(x=Treatment, fill = Seeded.))+
   ylab("Number of observations")+
   theme_bw()
 
+##ground cover and abundance data#######
+
+#boxplot for number of seeded species in each tx
+ggplot(GCA_df_2023_clean, aes(x=Treatment, y=Number_focal_species))+
+  geom_boxplot(fill="steelblue")+
+  theme_bw()+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  ylab("Number of individuals of seeded species")
