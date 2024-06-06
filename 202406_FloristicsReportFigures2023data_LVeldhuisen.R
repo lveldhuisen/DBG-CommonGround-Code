@@ -131,3 +131,22 @@ ggplot(GCA_df_2023_clean, aes(x=Number_focal_species))+
   geom_histogram()+
   facet_grid(.~Treatment)+
   theme_bw()
+
+###test waffle plot to show # of seeded individuals by treatment
+waffle_df_seeded <- unique(subset(GCA_df_2023_clean, select = -c(
+  Date, Plot_number,Random_quadrat,Focal_species.,Percent_GC_overall,
+  Percent_BG, Percent_GC_thatch)))
+
+waffle_seed <- waffle_df_seeded %>%
+  group_by(Treatment) %>%
+  summarise(
+    Size_Sum = sum(Number_focal_species)
+  )
+
+df_waffle_2023_seeded <- c('C' = 0, 'S' = 444, 'A/S' = 590,'A/S/H'= 538)
+
+
+#plot
+waffle(df_waffle_2023_seeded, row = 15, size = 1)+
+  labs(title = "Number of seeded species seedlings by treatment") +
+  theme_minimal(base_family = "Roboto Condensed")
