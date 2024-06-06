@@ -7,6 +7,7 @@ install.packages("dplyr")
 install.packages("tidyr")
 install.packages("viridis")
 install.packages("janitor")
+install.packages("treemapify")
 
 library(tidyverse) #for making figures
 library(dplyr) #data manipulation
@@ -14,6 +15,7 @@ library(tidyr) #more data manipulation
 library(viridis) #colorblind friendly color palette
 library(devtools) #to download waffle plot package
 library(janitor) #calculate proportions of dataset
+library(treemapify) #make tree maps to show community comp
 
 
 #2022 data for the entire golf course-------------------------------------------
@@ -58,6 +60,10 @@ ggplot(all2022_noplots, aes(x=factor(Status)))+
   scale_x_discrete(limits=c("Native","Introduced","Noxious","Unknown"))+
   theme_bw()+
   ggtitle("Distribution of native, introduced and noxious species for whole site")
+
+#treemap for species origin
+ggplot(testwaffle_df, aes(area = n, fill = Status)) +
+  geom_treemap()
 
 ###conservation values for whole site##########
 ggplot(all2022_noplots, aes(x=C.value))+
@@ -124,15 +130,12 @@ allplots2022_byplot_clean %>%
 
 waffle(df_waffle_2022, row = 4, size = 1.5)+
   labs(
-    title = "Proportion of native species at CommonGround golf course",
-    subtitle = "2022 data"
+    title = "Proportion of native and non-native species at CommonGround"
   ) +
   theme_minimal(
     base_family = "Roboto Condensed"
   )
 
-#other plot
-waffle(parts = )
 
 ###number of species by plot#########
 ggplot(plot_species_counts_df, aes(x=plot, y=taxon))+
