@@ -96,6 +96,20 @@ ggplot(allplots2022_byplot_clean, aes(x=plot, fill = Wetland_indicator_status))+
   scale_fill_viridis_d(breaks=c("OBL","FACW","FAC","FACU","UPL","Unknown"))+
   ggtitle("Wetland indicator statuses by plot")
 
+###wetland indicator status waffle plot######
+#make data set for waffle plot
+waffle_df_WIS <- unique(subset(allplots2022_byplot_clean, select = -c(plot)))
+tabyl(waffle_df_WIS, Wetland_indicator_status)
+df_waffle_2022_WIS <- c('FAC' = 12, 'FACU' = 44, 'FACW' = 11,'OBL'=5,
+                      'UPL'= 7, 'Unknown' = 94)
+
+
+#plot
+waffle(df_waffle_2022_WIS, row = 4, size = 1, colors = c("grey35","grey90","palegreen2",
+                                                       "palegreen3","palegreen4","cornsilk2"))+
+  labs(title = "Distribution of species' wetland indicator statuses at CommonGround") +
+  theme_minimal(base_family = "Roboto Condensed")
+
 ###conservation status############
 ggplot(allplots2022_byplot_clean, aes(x=plot, fill = C.value))+
   geom_bar() +
@@ -105,6 +119,21 @@ ggplot(allplots2022_byplot_clean, aes(x=plot, fill = C.value))+
   ylab("Number of species")+
   theme_bw()+
   ggtitle("Distribution of conservation values by plot")
+
+###conservation values waffle plot#######
+#make data set for waffle plot
+waffle_df_C <- unique(subset(allplots2022_byplot_clean, select = -c(plot)))
+tabyl(waffle_df_C, C.value)
+df_waffle_2022_C <- c('0' = 91, '1' = 3, '2' = 7,'3'=5,
+                      '4'= 14,'5'=2,'6'=2, '7'=3, 'Unknown' = 46)
+
+
+#plot
+waffle(df_waffle_2022_C, row = 4, size = 1, colors = c("black","grey50","grey70",
+                                                       "grey89","palegreen1","palegreen2",
+                                                       "palegreen3","palegreen4","cornsilk2"))+
+  labs(title = "Distribution of species' conservation values at CommonGround") +
+  theme_minimal(base_family = "Roboto Condensed")
 
 ###native/invasive by plot#######
 ggplot(allplots2022_byplot_clean, aes(x=plot, fill = Status))+
@@ -128,7 +157,7 @@ allplots2022_byplot_clean %>%
 
 #plot
 
-waffle(df_waffle_2022, row = 4, size = 1.5)+
+waffle(df_waffle_2022, row = 4, size = 1.5, colors = c("palegreen4","gray87","black","cornsilk2"))+
   labs(
     title = "Proportion of native and non-native species at CommonGround"
   ) +
