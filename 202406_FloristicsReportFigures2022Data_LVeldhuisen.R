@@ -1,15 +1,20 @@
 #2024-05-31
 #code for 2022 CommonGround species surveys figures to go in report
 
+install.packages("devtools")
 install.packages("tidyverse")
 install.packages("dplyr")
 install.packages("tidyr")
 install.packages("viridis")
+install.packages("janitor")
 
 library(tidyverse) #for making figures
 library(dplyr) #data manipulation
 library(tidyr) #more data manipulation
 library(viridis) #colorblind friendly color palette
+library(devtools) #to download waffle plot package
+library(janitor) #calculate proportions of dataset
+
 
 #2022 data for the entire golf course-------------------------------------------
 #Bring in and clean data--------------------------------------------------------
@@ -105,6 +110,29 @@ ggplot(allplots2022_byplot_clean, aes(x=plot, fill = Status))+
   theme_bw()+
   ggtitle("Native vs introduced by plot")
 
+###waffle plot for species origin by plot#####
+#make data set for waffle plot
+waffle_df <- unique(subset(allplots2022_byplot_clean, select = -c(plot)))
+tabyl(waffle_df, Status)
+df_waffle_2022 <- c('Native' = 54, 'Introduced' = 75, 'Noxious' = 15, 'Unknown' = 29)
+
+#try different way to make data set for waffle
+allplots2022_byplot_clean %>%
+  count(Status, taxon) -> testwaffle_df
+
+#plot
+
+waffle(df_waffle_2022, row = 4, size = 1.5)+
+  labs(
+    title = "Proportion of native species at CommonGround golf course",
+    subtitle = "2022 data"
+  ) +
+  theme_minimal(
+    base_family = "Roboto Condensed"
+  )
+
+#other plot
+waffle(parts = )
 
 ###number of species by plot#########
 ggplot(plot_species_counts_df, aes(x=plot, y=taxon))+

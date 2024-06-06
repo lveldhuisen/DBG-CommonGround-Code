@@ -15,10 +15,14 @@ setwd("C:/Users/leah.veldhuisen/Denver Botanic Gardens/
       Conservation - Documents/Restoration/CommonGround Golf Course/Data_rick")
 
 #species richeness data
-data2023 <- read.csv("2023_plantsurveys_data.csv") #read in csv
+data2023 <- read.csv("2023_PlantSurveys_SpeciesData.csv") #read in csv
 
 data2023_nounknowns <- data2023[-c(580:583,565:579,562:564,561,
                                    555:557,545:548,538,284),] #remove unknown species
+
+#make focal species count column continuous and numeric
+data2023_nounknowns$C.value <- as.numeric(as.character(
+  data2023_nounknowns$C.value)) 
 
 #summaries of species by plot
 tx_species_counts2023 <- data2023_nounknowns %>% group_by(Plot_number, Treatment) %>% 
@@ -28,9 +32,10 @@ tx_species_counts2023 <- data2023_nounknowns %>% group_by(Plot_number, Treatment
 tx_species_counts2023$Plot = paste(tx_species_counts2023$Plot_number,
                                    tx_species_counts2023$Treatment, sep=" ")
 
-#make focal species count column continuous and numeric
-data2023_nounknowns$C.value <- as.numeric(as.character(
-  data2023_nounknowns$C.value)) 
+#remove columns that don't make sense to sum
+tx_species_counts2023 = subset(tx_species_counts2023, select = -c(Date, Random_quadrat,
+                                            Seeded.,Origin, Wetland_indicator_status,
+                                            Plot))
 
 #ground cover and abundance data 
 GCA_df_2023 <- read.csv("2023_PlantSurveys_GroundCoverData.csv") #read csv
