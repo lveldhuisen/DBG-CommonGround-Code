@@ -1,10 +1,14 @@
 #2024-06-04
 #code for figures for CommonGround experimental plots 2023 data
 
+
 library(tidyverse) #for making figures
 library(dplyr) #data manipulation
 library(tidyr) #more data manipulation
 library(viridis) #colorblind friendly color palette
+
+#waffle plot example code
+https://github.com/hrbrmstr/waffle?tab=readme-ov-file
 
 #2023 data for experimental plots-----------------------------------------------
 
