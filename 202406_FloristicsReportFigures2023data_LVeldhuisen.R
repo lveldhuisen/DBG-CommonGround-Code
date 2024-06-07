@@ -135,7 +135,8 @@ ggplot(data2023_nounknowns, aes(x=Treatment, y=C.value))+
   theme_bw()
 
 ###waffle plot for variables by treatment##########
-test$Origin <- fct_relevel(test$Origin, "Introduced","Native","Noxious","Unknown")
+test$Origin <- fct_relevel(test$Origin, "Native","Introduced","Noxious","Unknown")
+test <- na.omit(test)
 
 ggplot(data = test, aes(fill = Origin, values = n, color = Origin))+
   geom_waffle(n_rows = 4, flip = TRUE, color = "white") +
@@ -147,7 +148,7 @@ ggplot(data = test, aes(fill = Origin, values = n, color = Origin))+
        title = "Number of seeded species by treatment") +
   theme_minimal(base_family = "Roboto Condensed") +
   theme(panel.grid = element_blank(), legend.title = element_text()) +
-  guides(fill = guide_legend(reverse = F))
+  guides(fill = guide_legend(reverse = T))
 
 ##Ground cover and abundance data#######
 
