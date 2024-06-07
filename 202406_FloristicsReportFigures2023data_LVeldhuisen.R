@@ -1,11 +1,14 @@
 #2024-06-04
 #code for figures for CommonGround experimental plots 2023 data
-
+install.packages("ggthemes")
+install.packages("hrbrthemes")
 
 library(tidyverse) #for making figures
 library(dplyr) #data manipulation
 library(tidyr) #more data manipulation
 library(viridis) #colorblind friendly color palette
+library(ggthemes) #to make ggplots pretty
+library(hrbrthemes) #to make ggplots pretty
 
 #waffle plot example code
 https://github.com/hrbrmstr/waffle?tab=readme-ov-file
@@ -18,15 +21,31 @@ https://github.com/hrbrmstr/waffle?tab=readme-ov-file
 setwd("C:/Users/leah.veldhuisen/Denver Botanic Gardens/
       Conservation - Documents/Restoration/CommonGround Golf Course/Data_rick")
 
-#species richeness data
+#species richness data
 data2023 <- read.csv("2023_PlantSurveys_SpeciesData.csv") #read in csv
 
 data2023_nounknowns <- data2023[-c(580:583,565:579,562:564,561,
                                    555:557,545:548,538,284),] #remove unknown species
 
+
 #make focal species count column continuous and numeric
 data2023_nounknowns$C.value <- as.numeric(as.character(
   data2023_nounknowns$C.value)) 
+
+##reformat to show proportion of native/seeded/C value/wetland species by tx###
+#remove unnecessary columns 
+df_treatments_summary = subset(data2023_nounknowns, select = 
+                                 -c(Date, Random_quadrat, Plot_number))
+df_treatments_summary <- unique(df_treatments_summary)
+df_treatments_summary %>% count(Treatment, Seeded., Origin, 
+                                C.value, Wetland_indicator_status, Species) -> test
+
+clean <- df_treatments_summary %>% group_by(Seeded., Origin, C.value, 
+                                            Wetland_indicator_status) %>%
+  summarise(n=sum())
+
+
+
 
 #summaries of species by plot
 tx_species_counts2023 <- data2023_nounknowns %>% group_by(Plot_number, Treatment) %>% 
@@ -60,6 +79,22 @@ ggplot(tx_species_counts2023, aes(x=Treatment, y=Species))+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
   ylab("Number of species")+
   ggtitle("Species richness by treatment")
+
+###waffle plot for richness by treatment##########
+
+waffle_richness_tx <- tx_species_counts2023 %>%
+  group_by(Treatment) %>%
+  summarise(
+    Size_Sum = sum(Species)
+  )
+
+df_richness_2023waffle <- c('C' = 58, 'S' = 63, 'A/S' = 70,'A/S/H'= 66)
+
+
+#plot
+waffle(df_richness_2023waffle, row = 5, size = 1)+
+  labs(title = "Species richness by treatment") +
+  theme_minimal(base_family = "Roboto Condensed")
 
 ###bar plot for c.values by tx####
 ggplot(data2023_nounknowns, aes(x=Treatment, fill = C.value))+
@@ -99,6 +134,21 @@ ggplot(data2023_nounknowns, aes(x=Treatment, y=C.value))+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
   theme_bw()
 
+###waffle plot for variables by treatment##########
+test$Origin <- fct_relevel(test$Origin, "Introduced","Native","Noxious","Unknown")
+
+ggplot(data = test, aes(fill = Origin, values = n, color = Origin))+
+  geom_waffle(n_rows = 4, flip = TRUE, color = "white") +
+  facet_wrap(~Treatment, nrow = 1, strip.position = "bottom")+
+  scale_x_discrete()+
+  scale_fill_viridis_d(begin = 0.1, end = 0.9) +
+  coord_equal() +
+  labs(x = "Treatment", y = "Species count",
+       title = "Number of seeded species by treatment") +
+  theme_minimal(base_family = "Roboto Condensed") +
+  theme(panel.grid = element_blank(), legend.title = element_text()) +
+  guides(fill = guide_legend(reverse = F))
+
 ##Ground cover and abundance data#######
 
 ###boxplot for number of seeded species in each tx######
@@ -136,7 +186,7 @@ ggplot(GCA_df_2023_clean, aes(x=Number_focal_species))+
   facet_grid(.~Treatment)+
   theme_bw()
 
-###test waffle plot to show # of seeded individuals by treatment
+###waffle plot to show # of seeded individuals by treatment######
 waffle_df_seeded <- unique(subset(GCA_df_2023_clean, select = -c(
   Date, Plot_number,Random_quadrat,Focal_species.,Percent_GC_overall,
   Percent_BG, Percent_GC_thatch)))
