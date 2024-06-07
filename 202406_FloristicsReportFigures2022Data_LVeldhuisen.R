@@ -83,6 +83,20 @@ ggplot(allplots2022_byplot, aes(x=Wetland_indicator_status))+
   theme_bw()+
   ggtitle("Dsitribution of wetland indicator statuses")
 
+###wetland indicator status waffle plot######
+#make data set for waffle plot
+waffle_df_WIS <- unique(subset(allplots2022_byplot_clean, select = -c(plot)))
+tabyl(waffle_df_WIS, Wetland_indicator_status)
+df_waffle_2022_WIS <- c('OBL'=5,'FACW' = 11,'FAC' = 12, 'FACU' = 44, 
+                        'UPL'= 7, 'Unknown' = 94)
+
+
+#plot
+waffle(df_waffle_2022_WIS, row = 4, size = 1, colors = c("deepskyblue4","deepskyblue2","palegreen2",
+                                                         "palegreen3","palegreen4","cornsilk2"))+
+  labs(title = "Distribution of species' wetland indicator statuses at CommonGround") +
+  theme_minimal(base_family = "Roboto Condensed")
+
 ##plot level figures##########
 
 ###wetland indicator status breakdown by plot#####
@@ -96,19 +110,6 @@ ggplot(allplots2022_byplot_clean, aes(x=plot, fill = Wetland_indicator_status))+
   scale_fill_viridis_d(breaks=c("OBL","FACW","FAC","FACU","UPL","Unknown"))+
   ggtitle("Wetland indicator statuses by plot")
 
-###wetland indicator status waffle plot######
-#make data set for waffle plot
-waffle_df_WIS <- unique(subset(allplots2022_byplot_clean, select = -c(plot)))
-tabyl(waffle_df_WIS, Wetland_indicator_status)
-df_waffle_2022_WIS <- c('FAC' = 12, 'FACU' = 44, 'FACW' = 11,'OBL'=5,
-                      'UPL'= 7, 'Unknown' = 94)
-
-
-#plot
-waffle(df_waffle_2022_WIS, row = 4, size = 1, colors = c("grey35","grey90","palegreen2",
-                                                       "palegreen3","palegreen4","cornsilk2"))+
-  labs(title = "Distribution of species' wetland indicator statuses at CommonGround") +
-  theme_minimal(base_family = "Roboto Condensed")
 
 ###conservation status############
 ggplot(allplots2022_byplot_clean, aes(x=plot, fill = C.value))+
