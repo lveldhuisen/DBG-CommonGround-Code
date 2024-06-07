@@ -138,7 +138,7 @@ ggplot(data2023_nounknowns, aes(x=Treatment, y=C.value))+
 test$Origin <- fct_relevel(test$Origin, "Native","Introduced","Noxious","Unknown")
 test <- na.omit(test)
 
-ggplot(data = test, aes(fill = Origin, values = n, color = Origin))+
+ggplot(data = test, aes(fill = Seeded., values = n, color = Origin))+
   geom_waffle(n_rows = 4, flip = TRUE, color = "white") +
   facet_wrap(~Treatment, nrow = 1, strip.position = "bottom")+
   scale_x_discrete()+
