@@ -9,6 +9,7 @@ library(tidyr) #more data manipulation
 library(viridis) #colorblind friendly color palette
 library(ggthemes) #to make ggplots pretty
 library(hrbrthemes) #to make ggplots pretty
+library(waffle)
 
 #waffle plot example code
 https://github.com/hrbrmstr/waffle?tab=readme-ov-file
@@ -43,8 +44,6 @@ df_treatments_summary %>% count(Treatment, Seeded., Origin,
 clean <- df_treatments_summary %>% group_by(Seeded., Origin, C.value, 
                                             Wetland_indicator_status) %>%
   summarise(n=sum())
-
-
 
 
 #summaries of species by plot
@@ -126,7 +125,8 @@ ggplot(data2023_nounknowns, aes(x=Treatment, fill = Seeded.))+
   scale_fill_viridis_d(begin = 0.2, end = 0.8)+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
   ylab("Number of observations")+
-  theme_bw()
+  theme_bw(base_size = 15)+
+  facet_wrap(.~Plot_number)
 
 ###boxplot for C values by treatment#######
 ggplot(data2023_nounknowns, aes(x=Treatment, y=C.value))+
@@ -205,3 +205,12 @@ df_waffle_2023_seeded <- c('C' = 0, 'S' = 444, 'A/S' = 590,'A/S/H'= 538)
 waffle(df_waffle_2023_seeded, row = 15, size = 1)+
   labs(title = "Number of seeded species seedlings by treatment") +
   theme_minimal(base_family = "Roboto Condensed")
+
+###bar plot for number of seeded species#######
+ggplot(GCA_df_2023_clean, aes(x=Treatment, y=Number_focal_species))+
+  geom_bar()+
+  scale_fill_viridis_d(begin = 0.2, end = 0.8)+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  ylab("Number of observations")+
+  theme_bw(base_size = 15)+
+  facet_wrap(.~Plot_number)

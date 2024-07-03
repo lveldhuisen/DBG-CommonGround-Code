@@ -56,10 +56,10 @@ plot_species_counts_df <- plot_species_counts_df[-c(9,17,20,21,22),] #remove spe
 ###number of taxa by status for whole site######
 ggplot(all2022_noplots, aes(x=factor(Status)))+
   geom_bar(stat="count", width=0.7, fill="steelblue")+
-  xlab("Native vs Introduced")+
+  xlab("Species origin")+
   ylab("Number of species")+
   scale_x_discrete(limits=c("Native","Introduced","Noxious","Unknown"))+
-  theme_bw()+
+  theme_bw(base_size = 15)+
   ggtitle("Distribution of native, introduced and noxious species for whole site")
 
 #treemap for species origin
