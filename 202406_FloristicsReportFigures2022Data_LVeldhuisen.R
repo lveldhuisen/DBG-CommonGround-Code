@@ -33,7 +33,8 @@ allplots2022_byplot_clean <- allplots2022_byplot[!allplots2022_byplot$plot %in%
                                                    c("16/1?", "Unknown",
                                                      "GC eastern access road",
                                                      "parking lot ",
-                                                     "7?"), ]
+                                                     "7?","18"), ]
+
 
 #remove plot info and combine all species together 
 all2022_noplots <- allplots2022_byplot #copy dataframe
@@ -103,7 +104,7 @@ waffle(df_waffle_2022_WIS, row = 4, size = 1, colors = c("deepskyblue4","deepsky
 ggplot(allplots2022_byplot_clean, aes(x=plot, fill = Wetland_indicator_status))+
   geom_bar()+
   scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12",
-                              "13","14","15","16","18"))+
+                              "13","14","15","16"))+
   ylab("Number of species")+
   theme_bw()+
   labs(fill = "Wetland indicator status")+
@@ -115,7 +116,7 @@ ggplot(allplots2022_byplot_clean, aes(x=plot, fill = Wetland_indicator_status))+
 ggplot(allplots2022_byplot_clean, aes(x=plot, fill = C.value))+
   geom_bar() +
   scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12",
-                              "13","14","15","16","18"))+
+                              "13","14","15","16"))+
   scale_fill_viridis_d()+
   ylab("Number of species")+
   theme_bw()+
@@ -141,10 +142,10 @@ ggplot(allplots2022_byplot_clean, aes(x=plot, fill = Status))+
   geom_bar()+
   scale_fill_viridis_d()+
   scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12",
-                              "13","14","15","16","18"))+
+                              "13","14","15","16"))+
   ylab("Number of species")+
   theme_bw()+
-  ggtitle("Native vs introduced by plot")
+  ggtitle("Species origin by plot")
 
 ###waffle plot for species origin by plot#####
 #make data set for waffle plot
@@ -172,6 +173,6 @@ ggplot(plot_species_counts_df, aes(x=plot, y=taxon))+
   geom_bar(stat = "identity", fill="steelblue")+
   ylab("Number of species")+
   scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12",
-                              "13","14","15","16","18"))+
+                              "13","14","15","16"))+
   theme_bw()+
   ggtitle("Number of species per plot")
