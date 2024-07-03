@@ -207,10 +207,11 @@ waffle(df_waffle_2023_seeded, row = 15, size = 1)+
   theme_minimal(base_family = "Roboto Condensed")
 
 ###bar plot for number of seeded species#######
-ggplot(GCA_df_2023_clean, aes(x=Treatment, y=Number_focal_species))+
-  geom_bar()+
-  scale_fill_viridis_d(begin = 0.2, end = 0.8)+
-  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+ggplot(GCA_df_2023_clean, aes())+
+  geom_bar(stat="count", width=0.7, fill="steelblue")+
+  xlab("Teatment")+
   ylab("Number of observations")+
-  theme_bw(base_size = 15)+
-  facet_wrap(.~Plot_number)
+  scale_x_discrete(limits=c("C","S","A/S","A/S/H"))+
+  theme_bw(base_size = 15)
+
+  
