@@ -1,6 +1,8 @@
 #2024-07-05
 #code for figures with 2024 veg survey data
 
+install.packages("patchwork")
+
 library(tidyverse) #for making figures
 library(dplyr) #data manipulation
 library(tidyr) #more data manipulation
@@ -8,6 +10,7 @@ library(viridis) #colorblind friendly color palette
 library(ggthemes) #to make ggplots pretty
 library(hrbrthemes) #to make ggplots pretty
 library(waffle) # for waffle plots
+library(patchwork) #to combine plots
 
 #bring in data 
 #ground cover and seeded species abundance 
@@ -23,13 +26,22 @@ data2024_nounknowns <- df_2024_species[-c(498:509,477:481),] #remove unknown spe
 
 
 ###bar plot for seeded species success by tx####
-ggplot(data2024_nounknowns, aes(x=Treatment, fill = Seeded.))+
+seedlings_2024 <- ggplot(data2024_nounknowns, aes(x=Treatment, fill = Seeded.))+
   geom_bar()+
   scale_fill_viridis_d(begin = 0.2, end = 0.8)+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
-  ylab("Number of observations")+
+  ylab("Number of quadrats with seeded species")+
+  ylim(0, 60)+
   theme_bw(base_size = 15)+
-  facet_wrap(.~Plot_number)
+  facet_wrap(.~Plot_number)+
+  ggtitle("2024")
+
+plot(seedlings_2024)
+
+###combine with 2023 data####
+seedlings_2023 / seedlings_2024 + 
+  plot_layout(guides = "collect") +
+  plot_layout(axes = "collect")
 
 ###waffle plot to show # of seeded individuals by treatment######
 waffle_df_seeded24 <- unique(subset(df_2024_GCA, select = -c(Plot_number,
@@ -50,3 +62,44 @@ df_waffle_2024_seeded <- c('C' = 0, 'S' = 64, 'A/S' = 84,'A/S/H'= 116)
 waffle(df_waffle_2024_seeded, row = 15, size = 1)+
   labs(title = "Number of seeded species seedlings by treatment") +
   theme_minimal(base_family = "Roboto Condensed")
+
+###boxplot for number of seeded species in each tx######
+ggplot(df_2024_GCA, aes(x=Treatment,y=Number_focal_species))+
+  geom_boxplot()+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  theme_bw()+
+  ylab("Number of individuals of seeded species")+
+  ggtitle("2024")+
+  ylim(0,150)
+
+#Combined 2023 and 2024 plot data-----------------------------------------------
+
+##add columns for year###
+GCA_df_2023_clean$Year = c(2023) 
+df_2024_GCA$Year = c(2024)
+
+#remove unecessary columns
+GCA_df_2023_clean = subset(GCA_df_2023_clean, select = 
+                                 -c(Date, Percent_BG,Percent_GC_overall,
+                                    Percent_GC_thatch))
+df_2023_tocombine <- GCA_df_2023_clean
+
+#rename column to match 2024###
+df_2023_tocombine = rename(df_2023_tocombine, Seeded. = Focal_species.)
+
+#remove columns from 2024
+df_2024_tocombine = subset(df_2024_GCA, select = 
+                             -c(X, ï..Date,Percent_GC_plants, Percent_BG,
+                                Percent_GC_thatch))
+
+#combine dataframes 
+total_GCA <- rbind(df_2023_tocombine, df_2024_tocombine)
+
+##boxplot for both years number of seeded species#####
+ggplot(total_GCA, aes(x=Treatment,y=Number_focal_species, fill = factor(Year)))+
+  geom_boxplot()+
+  scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
+  theme_bw(base_size = 14)+
+  ylab("Number of seeded individuals")+
+  scale_fill_discrete(name = "Year")
+  

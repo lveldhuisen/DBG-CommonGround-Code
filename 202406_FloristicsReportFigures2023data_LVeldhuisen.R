@@ -120,13 +120,16 @@ ggplot(data2023_nounknowns, aes(x=Treatment, fill = Wetland_indicator_status))+
   theme_bw()
 
 ###bar plot for seeded species success by tx####
-ggplot(data2023_nounknowns, aes(x=Treatment, fill = Seeded.))+
+seedlings_2023 <- ggplot(data2023_nounknowns, aes(x=Treatment, fill = Seeded.))+
   geom_bar()+
   scale_fill_viridis_d(begin = 0.2, end = 0.8)+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
-  ylab("Number of observations")+
+  ylab("Number of quadrats with seeded species")+
   theme_bw(base_size = 15)+
-  facet_wrap(.~Plot_number)
+  facet_wrap(.~Plot_number)+
+  ggtitle("2023")
+
+plot(seedlings_2023)
 
 ###boxplot for C values by treatment#######
 ggplot(data2023_nounknowns, aes(x=Treatment, y=C.value))+
