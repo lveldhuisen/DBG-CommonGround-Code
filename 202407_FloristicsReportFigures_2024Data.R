@@ -101,5 +101,5 @@ ggplot(total_GCA, aes(x=Treatment,y=Number_focal_species, fill = factor(Year)))+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
   theme_bw(base_size = 14)+
   ylab("Number of seeded individuals")+
-  scale_fill_discrete(name = "Year")
-  
+  scale_fill_manual(values=c("#2A788EFF", "#FDE725FF"),name = "Year")
+
