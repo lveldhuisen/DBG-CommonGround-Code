@@ -124,7 +124,7 @@ seedlings_2023 <- ggplot(data2023_nounknowns, aes(x=Treatment, fill = Seeded.))+
   geom_bar()+
   scale_fill_viridis_d(begin = 0.2, end = 0.8)+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
-  ylab("Number of quadrats with seeded species")+
+  ylab("Number of species observations")+
   theme_bw(base_size = 15)+
   facet_wrap(.~Plot_number)+
   ggtitle("2023")
