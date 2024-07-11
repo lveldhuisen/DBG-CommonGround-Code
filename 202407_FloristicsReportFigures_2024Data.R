@@ -2,6 +2,7 @@
 #code for figures with 2024 veg survey data
 
 install.packages("patchwork")
+install.packages("ggpubr")
 
 library(tidyverse) #for making figures
 library(dplyr) #data manipulation
@@ -11,6 +12,7 @@ library(ggthemes) #to make ggplots pretty
 library(hrbrthemes) #to make ggplots pretty
 library(waffle) # for waffle plots
 library(patchwork) #to combine plots
+library(ggpubr) #to add p values to plots
 
 #bring in data 
 #ground cover and seeded species abundance 
@@ -102,4 +104,12 @@ ggplot(total_GCA, aes(x=Treatment,y=Number_focal_species, fill = factor(Year)))+
   theme_bw(base_size = 14)+
   ylab("Number of seeded individuals")+
   scale_fill_manual(values=c("#2A788EFF", "#FDE725FF"),name = "Year")
+
+##boxplot showing the number of seeded individuals across all tx in each year####
+ggplot(total_GCA, aes(x=factor(Year),y=Number_focal_species))+
+  geom_boxplot()+
+  theme_bw(base_size = 14)+
+  ylab("Number of seeded individuals")+
+  xlab("Year")+
+  stat_compare_means(method = "wilcox.test", label.x = "2024")
 
