@@ -3,6 +3,8 @@
 
 install.packages("patchwork")
 install.packages("ggpubr")
+install.packages("FSA")
+install.packages("rstatix")
 
 library(tidyverse) #for making figures
 library(dplyr) #data manipulation
@@ -13,6 +15,8 @@ library(hrbrthemes) #to make ggplots pretty
 library(waffle) # for waffle plots
 library(patchwork) #to combine plots
 library(ggpubr) #to add p values to plots
+library(FSA) #for Dunn post hoc test
+library(rstatix)#stats tests
 
 #bring in data 
 #ground cover and seeded species abundance 
@@ -26,6 +30,12 @@ df_2024_species <- read.csv("2024_PlantSurveys_SpeciesRichness.csv")
 
 data2024_nounknowns <- df_2024_species[-c(498:509,477:481),] #remove unknown species
 
+###stats to compare seeded species by tx######
+kruskal.test(Number_focal_species ~ Treatment, 
+             data = df_2024_GCA)
+
+dunnTest(Number_focal_species ~ Treatment, data = df_2024_GCA)
+pvalues_df <- compare_means(Number_focal_species ~ Treatment, df_2024_GCA)
 
 ###bar plot for seeded species success by tx####
 seedlings_2024 <- ggplot(data2024_nounknowns, aes(x=Treatment, fill = Seeded.))+
@@ -66,13 +76,18 @@ waffle(df_waffle_2024_seeded, row = 15, size = 1)+
   theme_minimal(base_family = "Roboto Condensed")
 
 ###boxplot for number of seeded species in each tx######
+
 ggplot(df_2024_GCA, aes(x=Treatment,y=Number_focal_species))+
   geom_boxplot()+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
   theme_bw()+
   ylab("Number of individuals of seeded species")+
   ggtitle("2024")+
-  ylim(0,150)
+  ylim(0,32)+
+  geom_bracket(xmin = c("C","C","C"), xmax = c("S","A/S","A/S/H"),
+               y.position = c(15, 25, 31), label = c("p=0.029","p=0.008","p<0.001"), 
+               tip.length = 0.01)
+  
 
 #Combined 2023 and 2024 plot data-----------------------------------------------
 
@@ -98,6 +113,12 @@ df_2024_tocombine = subset(df_2024_GCA, select =
 total_GCA <- rbind(df_2023_tocombine, df_2024_tocombine)
 
 ##boxplot for both years number of seeded species#####
+
+total_GCA %>%
+  group_by(Treatment) %>%
+  dunn_test(Number_focal_species ~ Year) %>%
+  adjust_pvalue()
+
 ggplot(total_GCA, aes(x=Treatment,y=Number_focal_species, fill = factor(Year)))+
   geom_boxplot()+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
@@ -113,3 +134,4 @@ ggplot(total_GCA, aes(x=factor(Year),y=Number_focal_species))+
   xlab("Year")+
   stat_compare_means(method = "wilcox.test", label.x = "2024")
 
+wilcox.test(x=Year, y=Number_focal_species, data=total_GCA)

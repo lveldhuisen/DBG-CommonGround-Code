@@ -156,6 +156,8 @@ ggplot(data = test, aes(fill = Seeded., values = n, color = Origin))+
 ##Ground cover and abundance data#######
 
 ###boxplot for number of seeded species in each tx######
+dunnTest(Number_focal_species ~ Treatment, data = df_2023_tocombine)
+
 ggplot(GCA_df_2023_clean, aes(x=Treatment,y=Number_focal_species))+
   geom_boxplot()+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
