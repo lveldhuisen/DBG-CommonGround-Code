@@ -28,7 +28,7 @@ df_2024_GCA <- read.csv("2024_PlantSurveys_GroundCoverAbundance.csv")
 #species lists
 df_2024_species <- read.csv("2024_PlantSurveys_SpeciesRichness.csv")
 
-data2024_nounknowns <- df_2024_species[-c(498:509,477:481),] #remove unknown species
+data2024_nounknowns <- df_2024_species[-c(498:509,477:481,510,38),] #remove unknown species
 
 ###stats to compare seeded species by tx######
 kruskal.test(Number_focal_species ~ Treatment, 
@@ -67,7 +67,7 @@ waffle_seed24 <- waffle_df_seeded24 %>%
     Size_Sum = sum(Number_focal_species)
   )
 
-df_waffle_2024_seeded <- c('C' = 0, 'S' = 64, 'A/S' = 84,'A/S/H'= 116)
+df_waffle_2024_seeded <- c('C' = 0, 'S' = 64, 'A/S' = 145,'A/S/H'= 116)
 
 
 #plot
@@ -76,16 +76,15 @@ waffle(df_waffle_2024_seeded, row = 15, size = 1)+
   theme_minimal(base_family = "Roboto Condensed")
 
 ###boxplot for number of seeded species in each tx######
-
 ggplot(df_2024_GCA, aes(x=Treatment,y=Number_focal_species))+
   geom_boxplot()+
   scale_x_discrete(limits = c("C","S","A/S","A/S/H"))+
   theme_bw()+
   ylab("Number of individuals of seeded species")+
   ggtitle("2024")+
-  ylim(0,32)+
+  ylim(0,35)+
   geom_bracket(xmin = c("C","C","C"), xmax = c("S","A/S","A/S/H"),
-               y.position = c(15, 25, 31), label = c("p=0.029","p=0.008","p<0.001"), 
+               y.position = c(15, 25, 34), label = c("p<0.01","p<0.01","p<0.01"), 
                tip.length = 0.01)
   
 
@@ -117,7 +116,7 @@ total_GCA <- rbind(df_2023_tocombine, df_2024_tocombine)
 total_GCA %>%
   group_by(Treatment) %>%
   dunn_test(Number_focal_species ~ Year) %>%
-  adjust_pvalue()
+  adjust_pvalue(method = "bonferroni")
 
 ggplot(total_GCA, aes(x=Treatment,y=Number_focal_species, fill = factor(Year)))+
   geom_boxplot()+
@@ -134,4 +133,5 @@ ggplot(total_GCA, aes(x=factor(Year),y=Number_focal_species))+
   xlab("Year")+
   stat_compare_means(method = "wilcox.test", label.x = "2024")
 
-wilcox.test(x=Year, y=Number_focal_species, data=total_GCA)
+wilcox.test(x=total_GCA$Year, y=total_GCA$Number_focal_species,
+            data=total_GCA, p.adjust.method = "bonferroni")
