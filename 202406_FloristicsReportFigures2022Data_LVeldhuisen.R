@@ -93,22 +93,28 @@ df_waffle_2022_WIS <- c('OBL'=5,'FACW' = 11,'FAC' = 12, 'FACU' = 44,
 
 
 #plot
-waffle(df_waffle_2022_WIS, row = 4, size = 1, colors = c("deepskyblue4","deepskyblue2","palegreen2",
-                                                         "palegreen3","palegreen4","cornsilk2"))+
+waffle(df_waffle_2022_WIS, row = 4, size = 1, colors = 
+         c("deepskyblue4","deepskyblue2","palegreen2",
+           "palegreen3","palegreen4","cornsilk2"))+
   labs(title = "Distribution of species' wetland indicator statuses at CommonGround") +
   theme_minimal(base_family = "Roboto Condensed")
 
 ##plot level figures##########
 
 ###wetland indicator status breakdown by plot#####
-ggplot(allplots2022_byplot_clean, aes(x=plot, fill = Wetland_indicator_status))+
+
+
+ggplot(allplots2022_byplot_clean, 
+       aes(x=plot, fill = Wetland_indicator_status))+
   geom_bar()+
   scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12",
                               "13","14","15","16"))+
   ylab("Number of species")+
   theme_bw()+
   labs(fill = "Wetland indicator status")+
-  scale_fill_viridis_d(breaks=c("OBL","FACW","FAC","FACU","UPL","Unknown"))+
+  scale_fill_manual(breaks = c("OBL","FACW","FAC","FACU","UPL","Unknown"),
+                    values = c("deepskyblue4","deepskyblue2",
+                               "palegreen2","palegreen3","palegreen4","cornsilk2"))+
   ggtitle("Wetland indicator statuses by plot")
 
 
@@ -137,10 +143,11 @@ waffle(df_waffle_2022_C, row = 4, size = 1, colors = c("black","grey50","grey70"
   labs(title = "Distribution of species' conservation values at CommonGround") +
   theme_minimal(base_family = "Roboto Condensed")
 
-###native/invasive by plot#######
+###origin by plot#######
 ggplot(allplots2022_byplot_clean, aes(x=plot, fill = Status))+
   geom_bar()+
-  scale_fill_viridis_d()+
+  scale_fill_manual(breaks = c("Native","Introduced","Noxious","Unknown"),
+                    values = c("palegreen4","gray87","black","cornsilk2"))+
   scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12",
                               "13","14","15","16"))+
   ylab("Number of species")+

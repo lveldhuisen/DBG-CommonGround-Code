@@ -131,7 +131,10 @@ ggplot(total_GCA, aes(x=factor(Year),y=Number_focal_species))+
   theme_bw(base_size = 14)+
   ylab("Number of seeded individuals")+
   xlab("Year")+
-  stat_compare_means(method = "wilcox.test", label.x = "2024")
+  ylim(0,170)+
+  geom_bracket(xmin = c("2023"), xmax = c("2024"),
+               y.position = c(168), label = c("p<0.01"), 
+               tip.length = 0.01)
 
 wilcox.test(x=total_GCA$Year, y=total_GCA$Number_focal_species,
             data=total_GCA, p.adjust.method = "bonferroni")
