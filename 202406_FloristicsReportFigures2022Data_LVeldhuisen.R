@@ -8,6 +8,9 @@ install.packages("tidyr")
 install.packages("viridis")
 install.packages("janitor")
 install.packages("treemapify")
+install.packages("flextable")
+install.packages("camtrapR")
+install.packages("taxize")
 
 library(tidyverse) #for making figures
 library(dplyr) #data manipulation
@@ -16,6 +19,9 @@ library(viridis) #colorblind friendly color palette
 library(devtools) #to download waffle plot package
 library(janitor) #calculate proportions of dataset
 library(treemapify) #make tree maps to show community comp
+library(flextable) #to make tables exportable to Word
+library(camtrapR)#check species name spelling
+library(taxize) #species names
 
 
 #2022 data for the entire golf course-------------------------------------------
@@ -123,7 +129,10 @@ ggplot(allplots2022_byplot_clean, aes(x=plot, fill = C.value))+
   geom_bar() +
   scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12",
                               "13","14","15","16"))+
-  scale_fill_viridis_d()+
+  scale_fill_manual(breaks = c("0","1","2","3","4","5","6","7","Unknown"),
+                    values = c("black","grey50","grey70",
+                               "grey89","palegreen1","palegreen2",
+                               "palegreen3","palegreen4","cornsilk2"))+
   ylab("Number of species")+
   theme_bw()+
   ggtitle("Distribution of conservation values by plot")
@@ -147,7 +156,7 @@ waffle(df_waffle_2022_C, row = 4, size = 1, colors = c("black","grey50","grey70"
 ggplot(allplots2022_byplot_clean, aes(x=plot, fill = Status))+
   geom_bar()+
   scale_fill_manual(breaks = c("Native","Introduced","Noxious","Unknown"),
-                    values = c("palegreen4","gray87","black","cornsilk2"))+
+                    values = c("palegreen4","gray70","black","cornsilk2"))+
   scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12",
                               "13","14","15","16"))+
   ylab("Number of species")+
@@ -166,7 +175,8 @@ allplots2022_byplot_clean %>%
 
 #plot
 
-waffle(df_waffle_2022, row = 4, size = 1.5, colors = c("palegreen4","gray87","black","cornsilk2"))+
+waffle(df_waffle_2022, row = 4, size = 1.5, colors = c("palegreen4","gray70",
+                                                       "black","cornsilk2"))+
   labs(
     title = "Proportion of native and non-native species at CommonGround"
   ) +
@@ -183,3 +193,19 @@ ggplot(plot_species_counts_df, aes(x=plot, y=taxon))+
                               "13","14","15","16"))+
   theme_bw()+
   ggtitle("Number of species per plot")
+
+#test making nicely formatted table---------------------------------------------
+#remove extra columns
+speciestable2022 <- read.csv("2022_RawSpeciesList.csv")
+
+#make table
+set_flextable_defaults(
+  font.family = "Arial", 
+  font.size = 10,
+  padding = 6)
+                     
+table <- flextable(speciestable2022)
+table <- set_header_labels(table, ï..2022.Entire.site.species = "2022 Species List")
+table <- width(table, width = 2.5)
+table <- bold(table, bold = TRUE, part = "header")
+table
