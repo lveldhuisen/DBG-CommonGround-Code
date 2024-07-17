@@ -50,7 +50,7 @@ seedlings_2024 <- ggplot(data2024_nounknowns, aes(x=Treatment, fill = Seeded.))+
 
 plot(seedlings_2024)
 
-###combine with 2023 data####
+###combined years bar plot number of seeded individuals####
 seedlings_2023 / seedlings_2024 + 
   plot_layout(guides = "collect") +
   plot_layout(axes = "collect")
