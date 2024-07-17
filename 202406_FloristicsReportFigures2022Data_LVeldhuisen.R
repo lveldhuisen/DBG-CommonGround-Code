@@ -22,6 +22,7 @@ library(treemapify) #make tree maps to show community comp
 library(flextable) #to make tables exportable to Word
 library(camtrapR)#check species name spelling
 library(taxize) #species names
+library(waffle) #to make waffle plots
 
 
 #2022 data for the entire golf course-------------------------------------------
