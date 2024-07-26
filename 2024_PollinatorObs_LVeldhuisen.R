@@ -32,11 +32,15 @@ wilcox.test(Total ~ Treatment,
 
 #boxplot comparing total pollinators between tx
 ggplot(pollinator_df, aes(x=Treatment,y=Total))+
-  geom_boxplot()+
+  geom_violin()+
   theme_bw()+
-  ylab("Total number of pollinators")
+  ylab("Total number of pollinators")+
+  geom_jitter(shape=16, position=position_jitter(0.05))
+  stat_summary(fun=mean, geom="point", size=4, color = "forestgreen")
 
-ggplot(pollinator_df, aes(x=Date, y=)) +
+#line graph pollinators by date 
+ggplot(pollinator_df, aes(x=Date, y=Total)) +
   geom_smooth()+
   scale_x_date()+
-  theme_bw()
+  theme_bw()+
+  ylab("Total number of pollinators")
