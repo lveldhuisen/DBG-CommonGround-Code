@@ -31,7 +31,7 @@ wilcox.test(Total ~ Treatment,
              data = pollinator_df)
 
 #boxplot comparing total pollinators between tx
-ggplot(pollinator_df, aes(x=Treatment,y=Total))+
+ggplot(pollinator_df, aes(x=Treatment,y=Total, fill = Treatment))+
   geom_violin()+
   theme_bw()+
   ylab("Total number of pollinators")+
@@ -43,4 +43,5 @@ ggplot(pollinator_df, aes(x=Date, y=Total)) +
   geom_smooth()+
   scale_x_date()+
   theme_bw()+
-  ylab("Total number of pollinators")
+  ylab("Total number of pollinators")+
+  facet_wrap(.~Treatment)
