@@ -8,6 +8,7 @@ library(viridis) #colorblind friendly color palette
 library(ggthemes) #to make ggplots pretty
 library(FSA) #for Dunn post hoc test
 library(rstatix)#stats tests
+library(ggpubr)
 
 
 #set working directory
@@ -19,8 +20,8 @@ setwd("C:/Users/leah.veldhuisen/Denver Botanic Gardens/
 pollinator_df <- read.csv("2024_PollinatorObs_Data.csv")
 
 #clean up data
-pollinator_df <- pollinator_df[-c(160:209),] #remove blank rows
-names(pollinator_df)[names(pollinator_df) == 'Ã¯..Date'] <- 'Date' #fix column name
+pollinator_df <- pollinator_df[-c(185:209),] #remove blank rows
+names(pollinator_df)[names(pollinator_df) == 'ï..Date'] <- 'Date' #fix column name
 
 pollinator_df <- pollinator_df %>%
   mutate(Date = as.Date(Date, format= "%m/%d/%y"))
@@ -32,10 +33,18 @@ wilcox.test(Total ~ Treatment,
 
 #boxplot comparing total pollinators between tx
 ggplot(pollinator_df, aes(x=Treatment,y=Total, fill = Treatment))+
-  geom_violin()+
+  geom_boxplot()+
   theme_bw()+
   ylab("Total number of pollinators")+
-  geom_jitter(shape=16, position=position_jitter(0.05))
+  stat_compare_means(method = "wilcox")+
+  ggtitle("2024 Pollinators")
+  
+#violin plot for differences between treatments
+ggplot(pollinator_df, aes(x=Treatment,y=Total, fill = Treatment))+
+    geom_violin()+
+    theme_bw()+
+    ylab("Total number of pollinators")+
+    geom_jitter(shape=16, position=position_jitter(0.05))
   stat_summary(fun=mean, geom="point", size=4, color = "forestgreen")
 
 #line graph pollinators by date 
@@ -44,4 +53,5 @@ ggplot(pollinator_df, aes(x=Date, y=Total)) +
   scale_x_date()+
   theme_bw()+
   ylab("Total number of pollinators")+
-  facet_wrap(.~Treatment)
+  facet_wrap(.~Treatment)+
+  ggtitle("2024 Pollinator abundance over summer")
