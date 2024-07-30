@@ -86,10 +86,16 @@ ggplot(pollinator_df, aes(x=Treatment, y=Bumble.bees))+
   ylab("Bumble bees per plot corner")+
   stat_compare_means(method = "wilcox")
 
-#proportion native bees by treatment 
+#boxplot proportion native bees by treatment 
 ggplot(pollinator_df, aes(x=Treatment, y=Proportion_native_bees))+
   geom_boxplot()+
   theme_bw()+
   ylab("Proportion of native bees per plot corner")+
   stat_compare_means(method = "wilcox", label.x = 1.3)
 
+#boxplot all bees by treatment 
+ggplot(pollinator_df, aes(x=Treatment, y=Total_bees))+
+  geom_boxplot()+
+  theme_bw()+
+  ylab("Total bees per plot corner")+
+  stat_compare_means(method = "wilcox", label.x = 1.3)
