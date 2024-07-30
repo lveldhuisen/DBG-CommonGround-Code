@@ -35,7 +35,7 @@ wilcox.test(Total ~ Treatment,
 ggplot(pollinator_df, aes(x=Treatment,y=Total, fill = Treatment))+
   geom_boxplot()+
   theme_bw()+
-  ylab("Total number of pollinators")+
+  ylab("Total number of pollinators/plot (sum of the four corners)")+
   stat_compare_means(method = "wilcox")+
   ggtitle("2024 Pollinators")
   
@@ -53,7 +53,7 @@ ggplot(pollinator_df, aes(x=Date, y=Total)) +
   geom_smooth()+
   scale_x_date()+
   theme_bw()+
-  ylab("Total number of pollinators")+
+  ylab("Total number of pollinators per plot corner")+
   facet_wrap(.~Treatment)+
   ggtitle("2024 Pollinator abundance over summer")
 
@@ -61,11 +61,35 @@ ggplot(pollinator_df, aes(x=Date, y=Total)) +
 ggplot(pollinator_df, aes(x=Date, y=Total, group = Date))+
   geom_boxplot()+
   theme_bw()+
-  facet_wrap(.~Treatment)
+  facet_wrap(.~Treatment)+
+  ylab("Total number of pollinators per plot corner")
 
 #bar plot for total pollinators grouped by date
 ggplot(pollinator_df, aes(y=Total, x = Date))+
   geom_col()+
   theme_bw()+
   facet_wrap(.~Treatment)+
-  ylab("Total number of pollinators per plot (sum of the four corners)")
+  ylab("Total number of pollinators/plot (sum of the four corners)")
+
+
+#difference in honey bees by treatment
+ggplot(pollinator_df, aes(x=Treatment, y=Honey.bees))+
+  geom_boxplot()+
+  theme_bw()+
+  ylab("Honey bees per plot corner")+
+  stat_compare_means(method = "wilcox")
+
+#difference in bumble bees by treatment
+ggplot(pollinator_df, aes(x=Treatment, y=Bumble.bees))+
+  geom_boxplot()+
+  theme_bw()+
+  ylab("Bumble bees per plot corner")+
+  stat_compare_means(method = "wilcox")
+
+#proportion native bees by treatment 
+ggplot(pollinator_df, aes(x=Treatment, y=Proportion_native_bees))+
+  geom_boxplot()+
+  theme_bw()+
+  ylab("Proportion of native bees per plot corner")+
+  stat_compare_means(method = "wilcox", label.x = 1.5)
+
