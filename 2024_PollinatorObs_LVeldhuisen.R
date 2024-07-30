@@ -91,5 +91,5 @@ ggplot(pollinator_df, aes(x=Treatment, y=Proportion_native_bees))+
   geom_boxplot()+
   theme_bw()+
   ylab("Proportion of native bees per plot corner")+
-  stat_compare_means(method = "wilcox", label.x = 1.5)
+  stat_compare_means(method = "wilcox", label.x = 1.3)
 
