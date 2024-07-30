@@ -51,7 +51,9 @@ ggplot(pollinator_df, aes(x=Treatment,y=Total, fill = Treatment))+
 ggplot(pollinator_df, aes(x=Date, y=Total)) +
   geom_point()+
   geom_smooth()+
-  scale_x_date()+
+  scale_x_date(date_minor_breaks = "1 day", 
+               date_labels = "%m/%d",
+               date_breaks = "1 week")+
   theme_bw()+
   ylab("Total number of pollinators per plot corner")+
   facet_wrap(.~Treatment)+
