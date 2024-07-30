@@ -8,7 +8,7 @@ library(viridis) #colorblind friendly color palette
 library(ggthemes) #to make ggplots pretty
 library(FSA) #for Dunn post hoc test
 library(rstatix)#stats tests
-library(ggpubr)
+library(ggpubr) # to add pvalues to plots
 
 
 #set working directory
@@ -21,7 +21,7 @@ pollinator_df <- read.csv("2024_PollinatorObs_Data.csv")
 
 #clean up data
 pollinator_df <- pollinator_df[-c(185:209),] #remove blank rows
-names(pollinator_df)[names(pollinator_df) == 'ï..Date'] <- 'Date' #fix column name
+names(pollinator_df)[names(pollinator_df) == 'Ã¯..Date'] <- 'Date' #fix column name
 
 pollinator_df <- pollinator_df %>%
   mutate(Date = as.Date(Date, format= "%m/%d/%y"))
@@ -49,9 +49,23 @@ ggplot(pollinator_df, aes(x=Treatment,y=Total, fill = Treatment))+
 
 #line graph pollinators by date 
 ggplot(pollinator_df, aes(x=Date, y=Total)) +
+  geom_point()+
   geom_smooth()+
   scale_x_date()+
   theme_bw()+
   ylab("Total number of pollinators")+
   facet_wrap(.~Treatment)+
   ggtitle("2024 Pollinator abundance over summer")
+
+#boxplot for total pollinators grouped by date
+ggplot(pollinator_df, aes(x=Date, y=Total, group = Date))+
+  geom_boxplot()+
+  theme_bw()+
+  facet_wrap(.~Treatment)
+
+#bar plot for total pollinators grouped by date
+ggplot(pollinator_df, aes(y=Total, x = Date))+
+  geom_col()+
+  theme_bw()+
+  facet_wrap(.~Treatment)+
+  ylab("Total number of pollinators per plot (sum of the four corners)")
